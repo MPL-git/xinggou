@@ -1,0 +1,26 @@
+
+#redis
+spring:
+  redis:
+    #redis机器ip
+    host: 116.62.24.252
+    #redis端口
+    port: 6379
+    #redis密码
+    password: kdsihgewhx
+    #redis超时时间（毫秒），如果不设置，取默认值2000
+    timeout: 10000
+
+
+app:
+  domain:
+    job: http://127.0.0.1:8005/job
+
+jwt:
+  staff:
+    secret: ugzhwdlsiwxsjqzl
+    # token有效期7天
+    token-expire-time-in-second: 604800
+    # refreshToken有效期14天
+    refresh-token-expire-time-in-second: 1209600
+

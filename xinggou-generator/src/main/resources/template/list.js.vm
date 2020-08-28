@@ -1,0 +1,79 @@
+let vm = new Vue({
+    el: '#app',
+    data: {
+        editUrl:baseURL + '/views/${moduleName}/${pathName}/edit.html'
+    },
+    mounted: function () {
+        layui.use(['init', 'table', 'form'], function () {
+            vm.table = layui.table;
+            vm.form = layui.form;
+
+            //表格渲染
+            vm.table.render({
+                elem: '#table-main',
+                url: baseURL + '/${moduleName}/${pathName}/list', //数据接口
+                cols: [[ //表头
+                    {type: 'checkbox', fixed: 'left'},
+#foreach($column in $listColumns)
+                    {field: '${column.attrname}', title: '${column.comments}'},
+#end
+                    {fixed: 'right', title: '操作', toolbar: '#tool', width: 120}
+                ]],
+            });
+
+        });
+    },
+    methods: {
+        query: function () {
+            vm.reload();
+        },
+        add: function () {
+            layer.open({
+                type: 2,
+                title: '新增',
+                maxmin:true,
+                area: defaultPopFrameSize,
+                content: this.editUrl
+            });
+        },
+        edit: function (data) {
+            layer.open({
+                type: 2,
+                title: '修改',
+                maxmin:true,
+                area: defaultPopFrameSize,
+                content: this.editUrl + '?id=' + data.id
+            });
+        },
+        del: function (ids) {
+            layer.confirm('确定要删除选中的记录？', {icon: 3, title: '提示', btn: ['确定', '取消']}, function (index) {
+                layer.close(index);
+                let loading = layer.load();
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "/${moduleName}/${pathName}/delete",
+                    contentType: "application/json",
+                    data: JSON.stringify(ids),
+                    success: function (r) {
+                        layer.close(loading);
+                        if (r.success) {
+                            layer.msg("操作成功", {icon: 1, time: 500});
+                            vm.reload();
+                        } else {
+                            layer.alert(r.msg);
+                        }
+                    }
+                });
+
+            }, function () {
+            });
+        },
+
+        reload: function () {
+            let data = vm.form.val("form-query");
+            vm.table.reload("table-main", {
+                where: data,
+            });
+        }
+    }
+});

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xinggou.rc.dao.KeyValueDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.xinggou.rc.entity.KeyValue" id="keyValueMap">
+        <result property="id" column="id"/>
+        <result property="typeCode" column="type_code"/>
+        <result property="paramKey" column="param_key"/>
+        <result property="paramValue" column="param_value"/>
+        <result property="reservedLong" column="reserved_long"/>
+        <result property="createDate" column="create_date"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="delFlag" column="del_flag"/>
+    </resultMap>
+
+
+</mapper>

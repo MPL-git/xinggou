@@ -1,0 +1,52 @@
+version: "3"
+services:
+  api-admin :
+    image: xinggou-admin-api
+    restart: always
+    ports:
+      - "9001:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: test
+    volumes:
+      - /home/xgtest/xinggou/logs/api-admin:/logs
+    networks:
+      - my-cloud
+
+  bc-service:
+    image: xinggou-bc-service
+    ports:
+      - "9050:9050"
+    environment:
+      SPRING_PROFILES_ACTIVE: test
+      # 注册到注册中心的IP，这里我们选择宿主机的IP
+      DUBBO_IP_TO_REGISTRY: 116.62.24.252
+      # 注册到注册中心的端口
+      DUBBO_PORT_TO_REGISTRY: 9050
+      #DUBBO_IP_TO_BIND: 116.62.24.252
+      DUBBO_PORT_TO_BIND: 9050
+    volumes:
+      - /home/xgtest/logs/bc-service:/logs
+    networks:
+      - my-cloud
+
+  rc-service:
+    image: xinggou-rc-service
+    ports:
+      - "9051:9051"
+    environment:
+      SPRING_PROFILES_ACTIVE: test
+      # 注册到注册中心的IP，这里我们选择宿主机的IP
+      DUBBO_IP_TO_REGISTRY: 116.62.24.252
+      # 注册到注册中心的端口
+      DUBBO_PORT_TO_REGISTRY: 9051
+      #DUBBO_IP_TO_BIND: 116.62.24.252
+      DUBBO_PORT_TO_BIND: 9051
+    volumes:
+      - /home/xgtest/logs/rc-service:/logs
+    networks:
+      - my-cloud
+
+
+networks:
+  my-cloud:
+    driver: bridge

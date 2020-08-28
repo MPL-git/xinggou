@@ -1,0 +1,62 @@
+dubbo:
+  scan:
+    base-packages: com.xinggou.bc
+  protocol:
+    name: dubbo
+    port: -1
+    # host: 116.62.24.252
+  registry:
+    address: spring-cloud://116.62.24.252:9030
+  cloud:
+    subscribed-services: xinggou-rc-service
+  consumer:
+    check: false
+    timeout: 5000
+  provider:
+    filter: -exception
+    timeout: 5000
+    delay: -1
+    retries: 0
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 116.62.24.252:9030
+        ip: 116.62.24.252
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://rm-bp18n5pubir25e5s8o.mysql.rds.aliyuncs.com/xinggou?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+      username: jfuser
+      password: 520*P&ty#32Qm
+      initial-size: 10
+      max-active: 100
+      min-idle: 10
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      #Oracle需要打开注释
+      #validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        #login-username: admin
+        #login-password: admin
+      filter:
+        stat:
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: false
+        wall:
+          config:
+            multi-statement-allow: true
+
+logging:
+  file:
+    path: /home/xgtest/xinggou/xinggou-bc-service

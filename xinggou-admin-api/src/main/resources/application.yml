@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: xinggou-admin-api
+  profiles:
+    active: dev
+    include: common,common-${spring.profiles.active}
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+      enabled: true
+  main:
+    allow-bean-definition-overriding: true
+
+extension:
+  cluster: false

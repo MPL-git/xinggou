@@ -1,0 +1,26 @@
+package ${package}.${moduleName}.service.impl;
+
+import org.springframework.stereotype.Service;
+import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
+
+import ${mainPath}.common.core.BaseServiceImpl;
+import ${mainPath}.common.utils.QueryObject;
+
+import ${package}.${moduleName}.dao.${className}Dao;
+import ${package}.${moduleName}.entity.${className};
+import ${package}.${moduleName}.service.${className}Service;
+
+@Service("${classname}Service")
+public class ${className}ServiceImpl extends BaseServiceImpl<${className}Dao, ${className}> implements ${className}Service {
+
+    @Override
+    protected QueryChainWrapper<${className}> builderQuery(QueryObject queryObject) {
+        QueryChainWrapper<${className}> wrapper = queryObject.fillWrapper(query());
+        if(queryObject.getQuery("id") != null){
+            wrapper.eq("id", queryObject.getQuery("id"));
+        }
+        return wrapper;
+    }
+
+
+}

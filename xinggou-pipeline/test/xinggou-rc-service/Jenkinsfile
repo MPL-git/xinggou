@@ -1,0 +1,53 @@
+#!groovy
+library 'xinggou-pipeline-library'
+
+def map = [:]
+
+/*环境变量，初始确定后一般不需更改*/
+map.put('maven','maven3.6.3')
+map.put('jdk','jdk8')
+
+def repoLocal = 'xinggou'
+/* 拉取代码 */
+map.put('isFetchCode',true)
+map.put('cvs','svn')
+map.put('repoUrl','svn://121.196.208.202/jufeng/醒购微服系统/trunk/src/xinggou')
+map.put('repoLocal',repoLocal)
+map.put('credId','svn-creds')
+
+/* 编译 */
+map.put('isCompile',true)
+def poms = [
+        "mvn clean install -N -f ${repoLocal}/pom.xml",
+        "mvn clean install -Dmaven.test.skip=true -f ${repoLocal}/xinggou-common/pom.xml",
+        "mvn clean install -Dmaven.test.skip=true -f ${repoLocal}/xinggou-bc/xinggou-bc-service-interface/pom.xml",
+        "mvn clean install -Dmaven.test.skip=true -f ${repoLocal}/xinggou-rc/xinggou-rc-service-interface/pom.xml",
+        "mvn clean package -Dmaven.test.skip=true -f ${repoLocal}/xinggou-rc/xinggou-rc-service/pom.xml",
+]
+map.put('poms',poms)
+
+/* 部署 */
+map.put('isDeploy',true)
+def apps = [
+    [
+            serverName:"xinggou",
+            serverHost:"116.62.24.252",
+            serverPort:11022,
+            serverUser:"xgtest",
+            serverPassword:"Jm689!test@xm",
+            workspace:"/home/xgtest/jenkins/workspace",
+            repoLocal:repoLocal,
+            appName:"xinggou-rc-service",
+            imageName:"xinggou/xinggou-rc-service",
+            exposePort:9060,
+            hostPort:9060,
+            dockerContext:"${repoLocal}/xinggou-rc/xinggou-rc-service",
+            dockerfile:"Dockerfile",
+            deployfile:"xinggou-pipeline-library/sh/deploy.sh",
+            runParam:""
+
+    ]
+]
+map.put('apps', apps)
+
+build(map)

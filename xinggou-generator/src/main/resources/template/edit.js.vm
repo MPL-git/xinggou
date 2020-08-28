@@ -1,0 +1,48 @@
+let vm = new Vue({
+    el: '#app',
+    data: {
+        model: {},
+    },
+    mounted: function () {
+        this.model.id = getUrlKey("id");
+        if (this.model.id != null) {
+            $.get(baseURL + "/${moduleName}/${pathName}/info?id=" + this.model.id, function (r) {
+                vm.model = r.data.model;
+            });
+        }
+
+        layui.use(['form'], function () {
+            let form = layui.form;
+            form.on('submit(form-edit)', function () {
+                vm.save();
+            })
+        });
+    },
+    methods: {
+        save: function () {
+            let loading = layer.load();
+            $.ajax({
+                type: "POST",
+                url: baseURL + "/${moduleName}/${pathName}/save",
+                contentType: "application/json",
+                data: JSON.stringify(vm.model),
+                success: function (r) {
+                    layer.close(loading);
+                    if (r.success) {
+                        layer.msg("操作成功", {icon: 1, time: 500}, function () {
+                            parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                            parent.layui.table.reload("table-main");
+                        });
+
+                    } else {
+                        layer.alert(r.msg);
+                    }
+                }
+            });
+        },
+
+        cancel: function () {
+            parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+        }
+    }
+});

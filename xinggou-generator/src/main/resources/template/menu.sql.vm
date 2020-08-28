@@ -1,0 +1,14 @@
+-- 菜单SQL
+INSERT INTO `bc_set_menu` (`parent_id`, `type`, `name`, `url`, `perms`, `icon`, `seq_no`)
+    VALUES ('1', '20', '${comments}', 'views/${moduleName}/${pathName}/list.html', NULL, '', '6');
+
+-- 按钮父菜单ID
+set @parentId = @@identity;
+
+-- 菜单对应按钮SQL
+INSERT INTO `bc_set_menu` (`parent_id`, `type`, `name`, `url`, `perms`, `icon`, `seq_no`)
+    SELECT @parentId, '30', '查看', null, '${moduleName}:${pathName}:list,${moduleName}:${pathName}:info', null, '6';
+INSERT INTO `bc_set_menu` (`parent_id`, `type`, `name`, `url`, `perms`, `icon`, `seq_no`)
+    SELECT @parentId, '30', '保存', null, '${moduleName}:${pathName}:save', null, '6';
+INSERT INTO `bc_set_menu` (`parent_id`, `type`, `name`, `url`, `perms`, `icon`, `seq_no`)
+    SELECT @parentId, '30', '删除', null, '${moduleName}:${pathName}:delete', null, '6';

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>${comments}</title>
+#set($header='<#include "/header.html">')
+  $header
+</head>
+<body>
+<div id="app" v-cloak>
+  <form class="layui-form form-edit" action="javascript:void(0)">
+    <div class="boxBody">
+#foreach($column in $editColumns)
+      <div class="layui-form-item">
+        <label class="layui-form-label">${column.comments}</label>
+        <div class="layui-input-inline">
+          <input type="text" class="layui-input" v-model="model.${column.attrname}" placeholder="${column.comments}">
+        </div>
+      </div>
+#end
+    </div>
+
+    <div class="boxBottom">
+      <div class="button-container">
+        <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="form-edit">
+          <i class="layui-icon layui-icon-ok"></i>提交
+        </button>
+        <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm" @click="cancel">
+          <i class="layui-icon layui-icon-close"></i>取消
+        </button>
+      </div>
+    </div>
+
+  </form>
+</div>
+<script src="${request.contextPath}/views/${moduleName}/${pathName}/edit.js?_${.now?long}"></script>
+</body>
+</html>

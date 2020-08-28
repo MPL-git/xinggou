@@ -1,0 +1,7 @@
+# ignore all files
+*
+# exclude dist and nginx.conf
+!Dockerfile
+!dist
+!build
+

@@ -1,0 +1,48 @@
+#!groovy
+library 'xinggou-pipeline-library'
+
+def map = [:]
+
+/*环境变量，初始确定后一般不需更改*/
+map.put('nodejs','nodejs14.8.0')
+
+def repoLocal = 'xinggou-admin-vue'
+
+/* 拉取代码 */
+map.put('isFetchCode',true)
+map.put('cvs','svn')
+map.put('repoUrl','svn://121.196.208.202/jufeng/醒购微服系统/trunk/src/xinggou/xinggou-admin-vue')
+map.put('repoLocal',repoLocal)
+map.put('credId','svn-creds')
+
+/* 编译 */
+map.put('isCompile',true)
+def npms = [
+        "yarn",
+        "yarn build:prod",
+]
+map.put('npms',npms)
+
+/* 部署 */
+map.put('isDeploy',true)
+def apps = [
+    [
+            serverName:"xinggou",
+            serverHost:"116.62.24.252",
+            serverPort:11022,
+            serverUser:"xgtest",
+            serverPassword:"Jm689!test@xm",
+            workspace:"/home/xgtest/jenkins/workspace",
+            repoLocal:repoLocal,
+            appName:"xinggou-admin-vue",
+            imageName:"xinggou/xinggou-admin-vue",
+            exposePort:80,
+            hostPort:9000,
+            dockerContext:"${repoLocal}",
+            dockerfile:"Dockerfile",
+            deployfile:"xinggou-pipeline-library/sh/deploy-node.sh"
+    ]
+]
+map.put('apps', apps)
+
+buildNode(map)

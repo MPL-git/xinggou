@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xinggou.bc.dao.SetRoleMenuDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.xinggou.bc.entity.SetRoleMenu" id="setRoleMenuMap">
+        <result property="id" column="id"/>
+        <result property="roleId" column="role_id"/>
+        <result property="menuId" column="menu_id"/>
+    </resultMap>
+
+    <delete id="deleteByMenuId">
+        delete from bc_set_role_menu where menu_id = #{menuId}
+    </delete>
+
+    <delete id="deleteByRoleId">
+        delete from bc_set_role_menu where role_id = #{roleId}
+    </delete>
+
+    <insert id="bulkCreate">
+        INSERT INTO `bc_set_role_menu` ( `role_id`, `menu_id`)
+        VALUES
+        <foreach collection="menuIds" item="menuId" separator=",">
+            ( #{roleId}, #{menuId})
+        </foreach>
+    </insert>
+
+</mapper>

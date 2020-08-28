@@ -1,0 +1,22 @@
+dubbo:
+  registry:
+    address: spring-cloud://116.62.24.252:9030
+    #register: false
+  cloud:
+    subscribed-services: xinggou-bc-service,xinggou-rc-service
+  consumer:
+    check: false #启动时是否检查依赖的服务
+    timeout: 5000
+
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        register-enabled: false
+        server-addr: 116.62.24.252:9030
+#        group: ADMIN_DEV
+
+logging:
+  file:
+    path: /home/xgtest/xinggou/xinggou-admin-api
